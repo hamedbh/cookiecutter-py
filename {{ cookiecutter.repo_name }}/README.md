@@ -6,7 +6,7 @@
 
 Having created this project with a cookiecutter you'll need to run `git init` to initialise it as a Git repo. The next steps are contained in the setup script, which will:
 
-1. Create a Python virtual environment and activate it. The Python executable and location of the virtual environment were set for you when you started the cookiecutter. If you decide you want to change these they are in `Makefile` as `PYTHON_PATH` and `VIRTUALENV_LOCATION` respectively.
+1. Create a Python virtual environment and activate it. The Python executable and location of the virtual environment were set for you when you started the cookiecutter. If you decide you want to change these they are in `Makefile` as `PYTHON_VERSION` and `VIRTUALENV_LOCATION` respectively.
 2. Install the required packages from `requirements.txt`, which includes your local code under `src`.
 3. Create an IPython kernel to use with notebooks, called {{ cookiecutter.repo_name }}.
 4. Install the Git pre-commit hooks defined in `.pre-commit-config.yaml`.

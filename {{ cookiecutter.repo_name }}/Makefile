@@ -5,7 +5,7 @@ all: data test clean lint requirements
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_NAME = {{ cookiecutter.repo_name }}
-PYTHON_PATH = {{ cookiecutter.python_path }}
+PYTHON_VERSION = {{ cookiecutter.python_path }}
 VIRTUALENV_LOCATION = {{ cookiecutter.virtualenv_location }}
 PYTHON_INTERPRETER = python3
 
@@ -53,7 +53,7 @@ requirements:
 ## Set up the Python environment
 environment:
 	$(PYTHON_INTERPRETER) -m virtualenv \
-	--python=$(PYTHON_PATH) \
+	--python=$(PYTHON_VERSION) \
 	$(VIRTUALENV_LOCATION)
 
 ## Run the tests

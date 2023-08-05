@@ -3,6 +3,6 @@
     "repo_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
     "author": "Your name (and/or that of your team)",
     "description": "A short description of the project.",
-    "python_path": "/opt/miniconda/envs/python391/bin/python",
+    "python_version": "python3" 
     "virtualenv_location": "./.venv"
 }

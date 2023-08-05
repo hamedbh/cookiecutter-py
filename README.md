@@ -20,7 +20,7 @@ $ pip3 install cookiecutter
 Simply run:
 
 ```bash
-cookiecutter git@gitlab.platform.dat.ns1s.corp.hmrc.gov.uk:cdio-data-science-public/ds-ip/templates/cookiecutter-py-datasci.git 
+cookiecutter git@github.com:hamedbh/cookiecutter-py-datasci.git 
 ```
 
 You'll then be prompted to enter certain info about your project:
@@ -29,5 +29,5 @@ You'll then be prompted to enter certain info about your project:
 - `repo_name`: by default this will be `project_name` in lower case with spaces replaced by underscores.
 - `author`: your name and/or that of your team.
 - `description`: in a sentence or two, what the project is about.
-- `python_path`: the path to the Python executable you want to use for this project. The default is `/opt/miniconda/envs/python391/bin/python`.
+- `python_version`: the path to the Python executable you want to use for this project. The default is `python3`.
 - `virtualenv_location`: where you want your Python virtual environment to be. By default this is `./.venv`, i.e. it will be inside your project directory in a subdirectory called `.venv`.
