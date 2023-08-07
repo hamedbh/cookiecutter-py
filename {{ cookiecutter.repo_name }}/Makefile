@@ -5,7 +5,7 @@ all: data test clean lint requirements
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_NAME = {{ cookiecutter.repo_name }}
-PYTHON_VERSION = {{ cookiecutter.python_path }}
+PYTHON_VERSION = {{ cookiecutter.python_version }}
 VIRTUALENV_LOCATION = {{ cookiecutter.virtualenv_location }}
 PYTHON_INTERPRETER = python3
 
