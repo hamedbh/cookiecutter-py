@@ -37,12 +37,12 @@ clean:
 
 ## Lint using flake8
 lint:
-	flake8 src
-	black --check --config pyproject.toml src
+	flake8 .
+	black --check .
 
 ## Format source code with black
 format:
-	black --config pyproject.toml src
+	black .
 
 ## Install required packages, including local/project source code	
 requirements:

@@ -2,7 +2,7 @@
 -e .
 
 # external requirements
-black
+black[jupyter]
 click
 flake8
 ipykernel

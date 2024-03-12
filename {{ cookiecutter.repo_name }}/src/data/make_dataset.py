@@ -8,7 +8,7 @@ from dotenv import find_dotenv, load_dotenv
 @click.command()
 @click.argument("input_path", type=click.Path(exists=True))
 @click.argument("output_path", type=click.Path())
-def main(input_path, output_path):
+def make_dataset(input_path, output_path):
     """Function to make analysis-ready datasets."""
 
     logger = logging.getLogger(__name__)
@@ -26,4 +26,4 @@ if __name__ == "__main__":
     # load up the .env entries as environment variables
     load_dotenv(find_dotenv())
 
-    main()
+    make_dataset()
