@@ -1,0 +1,11 @@
+#! /bin/bash
+# Purpose: A shell script to set up the project in one command
+# Usage: . setup.sh
+
+make environment \
+    && make requirements \
+    && poetry run pre-commit install \
+    && poetry run nbstripout --install \
+    && poetry run python3 -m ipykernel install \
+    --user --name="{{ cookiecutter.repo_name }}" \
+    && touch .env

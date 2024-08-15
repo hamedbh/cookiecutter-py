@@ -6,23 +6,20 @@
 
 Having created this project with a cookiecutter you'll need to run `git init` to initialise it as a Git repo. The next steps are contained in the setup script, which will:
 
-1. Create a Python virtual environment and activate it. The Python executable and location of the virtual environment were set for you when you started the cookiecutter. If you decide you want to change these they are in `Makefile` as `PYTHON_VERSION` and `VIRTUALENV_LOCATION` respectively.
-2. Install the required packages from `requirements.txt`, which includes your local code under `src`.
-3. Create an IPython kernel to use with notebooks, called {{ cookiecutter.repo_name }}.
-4. Install the Git pre-commit hooks defined in `.pre-commit-config.yaml`.
-5. Install nbstripout, which prevents notebook outputs being committed in version control.
+1. Create a Python virtual environment with Poetry.
+2. Install the required packages as defined in `pyproject.toml`, including your local code under `src`.
+3. Install the Git pre-commit hooks defined in `.pre-commit-config.yaml`.
+4. Install nbstripout, which prevents notebook outputs being committed in version control.
+5. Create an IPython kernel to use with notebooks, called {{ cookiecutter.repo_name }}.
+6. Create the `.env` file to use for managing env vars.
 
 To run the setup script:
 
 ```bash
-.setup.sh
+./setup_project
 ```
 
-Running that script should just be a one-off step. In future when you return you just need to activate the virtual environment with:
-
-```bash
-source {{ cookiecutter.virtualenv_location }}/bin/activate
-```
+Running that script should just be a one-off step.
 
 ## General principles
 
@@ -31,21 +28,21 @@ This template makes certain assumptions about how you'll organise and execute yo
 - The targets (datasets, models, plots, etc.) are defined and built using the `Makefile`. If you're new to [GNU Make](https://www.gnu.org/software/make/) it's very well-documented online. Karl Broman's [minimal make tutorial](https://kbroman.org/minimal_make/) is a great way to get started.
 - The Python scripts are all under `src` and use the [Python package structure](https://packaging.python.org/en/latest/tutorials/installing-packages/).
 - Data are stored in `data` and will not be managed through version control. Likewise for any models you build: they are stored in `models`.
-- The project template uses the [black](https://black.readthedocs.io/en/stable/) package to format the code. Running `make format` **will** reformat your code, in place, without asking. Use `make lint` first if you want to find out what would be changed first.
+- The project template uses the [ruff](https://docs.astral.sh/ruff/) package for linting and formatting. Running `make format` **will** reformat your code, in place, without asking. Run `poetry run ruff format --diff` to see what would be changed.
 
 ## Managing Python dependencies
 
-When you need to add new dependencies to the project first ensure you have your virtual environment activated and that your working directory is the top-level of your project. Then:
+Use Poetry to add dependencies to, or remove them from, the project.
 
 ```bash
-pip install new_pkg1 new_pkg2
-pip freeze > requirements.txt
-```
-
-If you miss the second step then your local environment will diverge from the defined packages. As a convenience there is a Bash script called `install_python_pkg` that wraps these two commands, which you can use as:
-
-```bash
-. install_python_pkg new_pkg1 new_pkg2
+# Add a dependency
+poetry add polars
+# Add a dev dependency
+poetry add ruff -G dev
+# Remove dependency
+poetry remove polars
+# Remove dev dependency
+poetry remove ruff -G dev
 ```
 
 ## Project documentation
@@ -81,10 +78,7 @@ The script at `src/data/make_dataset.py` is useful as a starter, illustrating ho
 ├── outputs                         <- Generated analysis and results
 │   └── figures                     <- Generated graphics and figures to be used in reporting
 │
-├── requirements.txt                <- The requirements file for reproducing the analysis environment
-│
-├── pyproject.toml                  <- These two files make the project pip installable 
-├── setup.cfg                       <- (pip install -e .) so src can be imported
+├── pyproject.toml                  <- Settings for the whole project
 |
 ├── src                             <- Source code for use in this project.
 │   ├── __init__.py                 <- Makes src a Python module
@@ -94,21 +88,17 @@ The script at `src/data/make_dataset.py` is useful as a starter, illustrating ho
 │   ├── features                    <- Scripts to turn raw data into features for modeling
 │   ├── models                      <- Scripts to train models and make predictions
 │
-├── test                            <- Code defining tests for code under `/src`. Filenames need
+├── tests                           <- Code defining tests for code under `src`. Filenames need
 |                                      to have a `test_` prefix to be run by the test runner
 ├── .pre-commit-config.yaml         <- Configuration for pre-commit hooks
-├── .env.sample                     <- Sample configuration variables and secrets for project
-├── setup.sh                        <- utility shell script that prepares repo for development (see 
+├── setup_project                   <- shell script that prepares repo for development (see 
 |                                      details above)
-├── install_python_pkg              <- utility shell script that installs packages with `pip` and 
-|                                      updates `requirements.txt`. 
 ├── .gitignore                      <- Exclusions from source control
-└── .gitlab                         <- folder containing merge template
 ```
 
 ## Environment variables
 
-This repo contains a `.env.sample` file that should be renamed to `.env` and completed as needed, e.g. with API keys. Then you can refer to those variables in your Python scripts easily:
+The `setup_project` script creates a `.env` file, which you should update as needed, e.g. with API keys. Then you can refer to those variables in your Python scripts easily:
 
 ```python
 import os
@@ -118,12 +108,12 @@ from dotenv import load_dotenv, find_dotenv
 dotenv_path = find_dotenv()
 # load up the entries as environment variables
 load_dotenv(dotenv_path)
-api_key = os.getenv["CONNECT_API_KEY"]
+api_key = os.getenv["API_KEY"]
 ```
 
-You can use dotenv in IPython. By default, it will use find_dotenv to search for a .env file:
+You can use dotenv in IPython. By default, it will use find_dotenv to search for a `.env` file:
 
-```
+```python
 %load_ext dotenv
 %dotenv
 ```

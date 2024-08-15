@@ -5,9 +5,6 @@ all: data test clean lint requirements
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_NAME = {{ cookiecutter.repo_name }}
-PYTHON_VERSION = {{ cookiecutter.python_version }}
-VIRTUALENV_LOCATION = {{ cookiecutter.virtualenv_location }}
-PYTHON_INTERPRETER = python3
 
 ###############################################################################
 # COMMANDS                                                                    #
@@ -28,37 +25,32 @@ PYTHON_INTERPRETER = python3
 data: data/dataset.csv 
 
 data/dataset.csv: requirements
-	$(PYTHON_INTERPRETER) src/data/make_dataset.py
+	python3 src/data/make_dataset.py
 
 ## Delete all compiled Python files
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
 
-## Lint using flake8
+## Lint using ruff
 lint:
-	flake8 .
-	black --check .
+	poetry run ruff check
 
-## Format source code with black
+## Format source code with ruff
 format:
-	black .
+	poetry run ruff format
 
 ## Install required packages, including local/project source code	
 requirements:
-	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
-	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
-	$(PYTHON_INTERPRETER) -m ipykernel install --user --name=$(PROJECT_NAME) 
+	poetry install
 
 ## Set up the Python environment
 environment:
-	$(PYTHON_INTERPRETER) -m virtualenv \
-	--python=$(PYTHON_VERSION) \
-	$(VIRTUALENV_LOCATION)
+	poetry env use /usr/bin/python3
 
 ## Run the tests
 test:
-	pytest test
+	pytest tests
 
 ###############################################################################
 # Self Documenting Commands                                                   #
