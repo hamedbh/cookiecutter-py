@@ -16,7 +16,6 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pip-tools",
     "ipykernel",
     "nbstripout",
     "pre-commit",

@@ -42,19 +42,18 @@ format:
 
 ## Install required packages, including local/project source code	
 requirements: requirements.txt dev_requirements.txt
-	python3 -m pip install -U pip setuptools
-	pip-sync $^
+	uv pip sync $^
 
 requirements.txt: pyproject.toml
-	pip-compile $< --strip-extras -o $@
+	uv pip compile $< -o $@
 
 dev_requirements.txt: pyproject.toml
-	pip-compile $< --extra dev --strip-extras -o $@
+	uv pip compile $< --all-extras -o $@
 
 ## Set up the Python environment
 environment:
-	python3 -m virtualenv --python=/usr/bin/python3 .venv
-	.venv/bin/pip install pip-tools
+	uv venv --seed
+	./.venv/bin/pip install -U pip setuptools
 
 ## Run the tests
 test:
