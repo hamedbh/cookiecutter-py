@@ -1,31 +1,35 @@
-[tool.poetry]
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
 name = "src"
 version = "0.0.1"
 description = "{{ cookiecutter.description }}"
-authors = ["{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>"]
+authors = [{name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}" }]
 readme = "README.md"
+requires-python = ">= 3.10"
+dependencies = [
+    "click",
+    "python-dotenv"
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-
-[tool.poetry.group.dev.dependencies]
-click = "^8.1.7"
-ipykernel = "^6.29.5"
-nbstripout = "^0.7.1"
-pre-commit = "^3.8.0"
-pytest = "^8.3.2"
-python-dotenv = "^1.0.1"
-ruff = "^0.5.7"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[project.optional-dependencies]
+dev = [
+    "pip-tools",
+    "ipykernel",
+    "nbstripout",
+    "pre-commit",
+    "pytest",
+    "ruff",
+]
 
 [tool.ruff]
 line-length = 79
 indent-width = 4
 
 [tool.ruff.lint]
+# The default set of rules is "E4", "E7", "E9", "F"
 select = ["E4", "E7", "E9", "F", "I"]
 
 [tool.ruff.format]

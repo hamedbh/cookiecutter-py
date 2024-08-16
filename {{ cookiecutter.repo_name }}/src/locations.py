@@ -1,5 +1,5 @@
-from pathlib import Path
 import os
+from pathlib import Path
 
 PROJECT_DIR = Path(__file__).resolve().parents[1]
 
@@ -8,6 +8,7 @@ DATA_SUBDIR = {
     "raw": os.path.join(DATA_HOME, "raw"),
     "interim": os.path.join(DATA_HOME, "interim"),
     "processed": os.path.join(DATA_HOME, "processed"),
+    "external": os.path.join(DATA_HOME, "external"),
 }
 
 MODELS_HOME = os.path.join(PROJECT_DIR, "models")

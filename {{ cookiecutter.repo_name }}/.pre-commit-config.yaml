@@ -8,3 +8,6 @@ repos:
       # Run the formatter.
       - id: ruff-format
         args: [ --check ]
+
+# TODO: consider adding pre-commit hooks for pip-tools:
+# https://pypi.org/project/pip-tools/

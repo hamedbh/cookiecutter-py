@@ -22,10 +22,10 @@ PROJECT_NAME = {{ cookiecutter.repo_name }}
 # running `make` or `make help` at the command line.
 
 ## Make datasets
-data: data/dataset.csv 
+data: data/raw/dataset.csv
 
-data/dataset.csv: requirements
-	python3 src/data/make_dataset.py
+data/raw/dataset.csv:
+	python3 -m src.data.make_dataset
 
 ## Delete all compiled Python files
 clean:
@@ -34,19 +34,27 @@ clean:
 
 ## Lint using ruff
 lint:
-	poetry run ruff check
+	ruff check
 
 ## Format source code with ruff
 format:
-	poetry run ruff format
+	ruff format
 
 ## Install required packages, including local/project source code	
-requirements:
-	poetry install
+requirements: requirements.txt dev_requirements.txt
+	python3 -m pip install -U pip setuptools
+	pip-sync $^
+
+requirements.txt: pyproject.toml
+	pip-compile $< --strip-extras -o $@
+
+dev_requirements.txt: pyproject.toml
+	pip-compile $< --extra dev --strip-extras -o $@
 
 ## Set up the Python environment
 environment:
-	poetry env use /usr/bin/python3
+	python3 -m virtualenv --python=/usr/bin/python3 .venv
+	.venv/bin/pip install pip-tools
 
 ## Run the tests
 test:

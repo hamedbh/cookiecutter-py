@@ -3,9 +3,10 @@
 # Usage: . setup.sh
 
 make environment \
+    && source .venv/bin/activate \
     && make requirements \
-    && poetry run pre-commit install \
-    && poetry run nbstripout --install \
-    && poetry run python3 -m ipykernel install \
+    && pre-commit install \
+    && nbstripout --install \
+    && python3 -m ipykernel install \
     --user --name="{{ cookiecutter.repo_name }}" \
     && touch .env

@@ -6,17 +6,19 @@
 
 Having created this project with a cookiecutter you'll need to run `git init` to initialise it as a Git repo. The next steps are contained in the setup script, which will:
 
-1. Create a Python virtual environment with Poetry.
-2. Install the required packages as defined in `pyproject.toml`, including your local code under `src`.
+1. Run `make envrionment`, which will create a Python virtualenv and install the [pip-tools](https://pypi.org/project/pip-tools/) package into it.
+2. Run `make requirements`, which will:
+    - Use `pip-compile` to resolve the dependencies defined in `pyproject.toml` and pin them in `requirements.txt` and `dev_requirements.txt`.
+    - Use `pip-sync` to sync the environment with those requirements files.
 3. Install the Git pre-commit hooks defined in `.pre-commit-config.yaml`.
-4. Install nbstripout, which prevents notebook outputs being committed in version control.
+4. Install [nbstripout](https://pypi.org/project/nbstripout/), which prevents notebook outputs being committed in version control.
 5. Create an IPython kernel to use with notebooks, called {{ cookiecutter.repo_name }}.
 6. Create the `.env` file to use for managing env vars.
 
 To run the setup script:
 
 ```bash
-./setup_project
+. setup_project
 ```
 
 Running that script should just be a one-off step.
@@ -28,22 +30,34 @@ This template makes certain assumptions about how you'll organise and execute yo
 - The targets (datasets, models, plots, etc.) are defined and built using the `Makefile`. If you're new to [GNU Make](https://www.gnu.org/software/make/) it's very well-documented online. Karl Broman's [minimal make tutorial](https://kbroman.org/minimal_make/) is a great way to get started.
 - The Python scripts are all under `src` and use the [Python package structure](https://packaging.python.org/en/latest/tutorials/installing-packages/).
 - Data are stored in `data` and will not be managed through version control. Likewise for any models you build: they are stored in `models`.
-- The project template uses the [ruff](https://docs.astral.sh/ruff/) package for linting and formatting. Running `make format` **will** reformat your code, in place, without asking. Run `poetry run ruff format --diff` to see what would be changed.
+- The project template uses the [ruff](https://docs.astral.sh/ruff/) package for linting and formatting. Running `make format` **will** reformat your code, in place, without asking. Run `ruff format --diff` to see what would be changed.
 
 ## Managing Python dependencies
 
-Use Poetry to add dependencies to, or remove them from, the project.
+Specify your dependencies in `pyproject.toml`. For example:
 
-```bash
-# Add a dependency
-poetry add polars
-# Add a dev dependency
-poetry add ruff -G dev
-# Remove dependency
-poetry remove polars
-# Remove dev dependency
-poetry remove ruff -G dev
+```toml
+[project]
+...
+dependencies = [
+    "click",
+    "python-dotenv"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pip-tools",
+    "ipykernel",
+    "nbstripout",
+    "pre-commit",
+    "pytest",
+    "ruff",
+]
 ```
+
+This sets `click` and `python-dotenv` as 'core' dependencies that are necessary for the project to run. The rest of the packages are grouped together as `dev` dependencies.
+
+Then you can simply `make requirements` to resolve the dependencies, pin them in the relevant files (`requirements.txt` for the core dependencies, `dev_requirements.txt` for dev), and sync your virtualenv with those files.
 
 ## Project documentation
 
@@ -63,9 +77,10 @@ The script at `src/data/make_dataset.py` is useful as a starter, illustrating ho
 ├── Makefile                        <- Makefile with commands like `make data`
 ├── README.md                       <- The top-level README for developers using this project.
 ├── data
+│   ├── external
+│   ├── raw                         <- The original, immutable data dump.
 │   ├── interim                     <- Intermediate data that has been transformed.
-│   ├── processed                   <- The final, canonical data sets for modeling.
-│   └── raw                         <- The original, immutable data dump.
+│   └── processed                   <- The final, canonical data sets for modeling.
 │
 ├── models                          <- Local folder to keep serialised models
 ├── notebooks                       <- Jupyter notebooks. Naming convention is a number (for ordering),
