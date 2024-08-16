@@ -9,5 +9,5 @@ repos:
       - id: ruff-format
         args: [ --check ]
 
-# TODO: consider adding pre-commit hooks for pip-tools:
+# TODO: consider adding pre-commit hooks for uv, along the lines of pip-tools:
 # https://pypi.org/project/pip-tools/
