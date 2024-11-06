@@ -25,7 +25,7 @@ PROJECT_NAME = {{ cookiecutter.repo_name }}
 data: data/raw/dataset.csv
 
 data/raw/dataset.csv:
-	python3 -m src.data.make_dataset
+	uv run python3 -m src.data.make_dataset
 
 ## Delete all compiled Python files
 clean:
@@ -34,11 +34,11 @@ clean:
 
 ## Lint using ruff
 lint:
-	ruff check
+	uv run ruff check
 
 ## Format source code with ruff
 format:
-	ruff format
+	uv run ruff format
 
 ## Install required packages, including local/project source code	
 requirements: requirements.txt requirements-dev.txt
@@ -58,7 +58,7 @@ environment:
 
 ## Run the tests
 test:
-	pytest tests
+	uv run pytest tests
 
 ###############################################################################
 # Self Documenting Commands                                                   #

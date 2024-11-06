@@ -2,11 +2,9 @@
 # Purpose: A shell script to set up the project in one command
 # Usage: . setup.sh
 
-make environment \
-    && source .venv/bin/activate \
-    && make requirements \
-    && pre-commit install \
-    && nbstripout --install \
-    && python3 -m ipykernel install \
+make requirements \
+    && uv run pre-commit install \
+    && uv run nbstripout --install \
+    && uv run python3 -m ipykernel install \
     --user --name="{{ cookiecutter.repo_name }}" \
     && touch .env
